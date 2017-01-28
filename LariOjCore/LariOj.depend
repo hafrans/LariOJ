@@ -1,0 +1,104 @@
+# depslib dependency file v1.0
+1484910884 source:/home/hafrans/Desktop/LariOj/src/LariCore.cpp
+	"LariCore.h"
+
+1484985422 /home/hafrans/Desktop/LariOj/include/LariCore.h
+
+1485603593 source:/home/hafrans/Desktop/LariOj/src/main.cc
+	"DbHelper.h"
+	"lari.h"
+	"utility.h"
+	"judge_core.h"
+
+1485360741 /home/hafrans/Desktop/LariOj/include/lari.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<unistd.h>
+	<sys/types.h>
+	<sys/wait.h>
+	<sys/resource.h>
+	<sys/stat.h>
+	<time.h>
+	<fcntl.h>
+	<error.h>
+	<signal.h>
+	<stdarg.h>
+	"debug.h"
+	<LariCore.h>
+
+1485604441 source:/home/hafrans/Desktop/LariOj/src/judge_core.c
+	"judge_core.h"
+	"syscall_filiter.h"
+	"debug.h"
+
+1485603113 /home/hafrans/Desktop/LariOj/include/judge_core.h
+	<stdio.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<dirent.h>
+	<unistd.h>
+	<time.h>
+	<stdarg.h>
+	<ctype.h>
+	<sys/wait.h>
+	<sys/ptrace.h>
+	<sys/types.h>
+	<sys/user.h>
+	<sys/syscall.h>
+	<sys/time.h>
+	<sys/resource.h>
+	<sys/signal.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<unistd.h>
+	<asm/unistd.h>
+	<sys/user.h>
+	<sys/reg.h>
+	"utility.h"
+
+1485361761 source:/home/hafrans/Desktop/LariOj/src/utility.c
+	"utility.h"
+
+1485361374 /home/hafrans/Desktop/LariOj/include/utility.h
+	<stdio.h>
+	<stdarg.h>
+	<stdlib.h>
+	<string.h>
+	<unistd.h>
+	<sys/stat.h>
+	<sys/fcntl.h>
+
+1485183522 source:/home/hafrans/Desktop/LariOj/src/debug.c
+	"debug.h"
+	<string.h>
+
+1485183552 /home/hafrans/Desktop/LariOj/include/debug.h
+	"assert.h"
+	"stdarg.h"
+	"stdio.h"
+
+1484884495 source:/home/hafrans/Desktop/LariOj/src/judgeCore.c
+
+1484910899 source:/home/hafrans/Desktop/LariOj/src/testasdad.cpp
+	"testasdad.h"
+
+1484910899 /home/hafrans/Desktop/LariOj/include/testasdad.h
+
+1478134327 /home/hafrans/Desktop/LariOj/include/okcalls.h
+	<sys/syscall.h>
+
+1485183529 /home/hafrans/Desktop/LariOj/include/syscall_filiter.h
+
+1485604667 source:/home/hafrans/Desktop/LariOj/src/DbHelper.cpp
+	"DbHelper.h"
+
+1485604881 /home/hafrans/Desktop/LariOj/include/DbHelper.h
+	<mysql/mysql.h>
+	"stdio.h"
+	"string.h"
+	<vector>
+	<string>
+	<iostream>
+
