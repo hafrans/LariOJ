@@ -92,7 +92,6 @@ unsigned int DbHelper::exec(const char* __cmd_query) throw(const char *)
     if(handle == nullptr){
         throw "db connection is not initialized";
     }
-
     if(!mysql_real_query(handle,__cmd_query,strlen(__cmd_query)))
         return mysql_affected_rows(handle);
     else
@@ -117,6 +116,7 @@ vector<vector<std::string>> DbHelper::query(const char* __cmd_query) throw (cons
             }
             myVec.push_back(vecTmp);
         }
+        mysql_free_result(result);
     }else{
         throw this->get_errmsg();
     }
@@ -133,14 +133,16 @@ vector<std :: string> DbHelper::queryOneRow(const char* __cmd_query) throw (cons
     vector<std::string> vecTmp;
     if(!mysql_real_query(handle,__cmd_query,strlen(__cmd_query))){
         result = mysql_use_result(handle);
-        rows = mysql_fetch_row(result);
-            unsigned int __size = mysql_field_count(handle);
-            for(unsigned int  i = 0; i<__size ; ++i){
-                // TODO (hafrans#1#): bugfix ...
-                string __str_cxx_tmp(rows[i] == NULL ? "NULL" : rows[i]);
+            if((rows = mysql_fetch_row(result))) {
+                unsigned int __size = mysql_field_count(handle);
+                for(unsigned int  i = 0; i<__size ; ++i){
+                    // TODO (hafrans#1#): bugfix ...
+                    std :: string __str_cxx_tmp(rows[i] == NULL ? "NULL" : rows[i]);
 
-                vecTmp.push_back(__str_cxx_tmp);
+                    vecTmp.push_back(__str_cxx_tmp);
+                }
             }
+        mysql_free_result(result);
     }else{
         throw this->get_errmsg();
     }
@@ -148,6 +150,14 @@ vector<std :: string> DbHelper::queryOneRow(const char* __cmd_query) throw (cons
     return vecTmp;
 }
 
+
+
+unsigned long DbHelper::escape(char* __str__dest, const char* __str_src) noexcept
+{
+    unsigned long __m_size = mysql_escape_string(__str__dest,__str_src,strlen(__str_src));
+    __str__dest[__m_size] = 0;
+    return __m_size;
+}
 
 
 

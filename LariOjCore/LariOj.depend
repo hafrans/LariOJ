@@ -4,7 +4,7 @@
 
 1484985422 /home/hafrans/Desktop/LariOj/include/LariCore.h
 
-1485603593 source:/home/hafrans/Desktop/LariOj/src/main.cc
+1485675311 source:/home/hafrans/Desktop/LariOj/src/main.cc
 	"DbHelper.h"
 	"lari.h"
 	"utility.h"
@@ -27,12 +27,12 @@
 	"debug.h"
 	<LariCore.h>
 
-1485604441 source:/home/hafrans/Desktop/LariOj/src/judge_core.c
+1485674866 source:/home/hafrans/Desktop/LariOj/src/judge_core.c
 	"judge_core.h"
 	"syscall_filiter.h"
 	"debug.h"
 
-1485603113 /home/hafrans/Desktop/LariOj/include/judge_core.h
+1485675209 /home/hafrans/Desktop/LariOj/include/judge_core.h
 	<stdio.h>
 	<stdio.h>
 	<stdlib.h>
@@ -91,13 +91,14 @@
 
 1485183529 /home/hafrans/Desktop/LariOj/include/syscall_filiter.h
 
-1485604667 source:/home/hafrans/Desktop/LariOj/src/DbHelper.cpp
+1485617901 source:/home/hafrans/Desktop/LariOj/src/DbHelper.cpp
 	"DbHelper.h"
 
-1485604881 /home/hafrans/Desktop/LariOj/include/DbHelper.h
+1485617870 /home/hafrans/Desktop/LariOj/include/DbHelper.h
 	<mysql/mysql.h>
-	"stdio.h"
-	"string.h"
+	<cstdio>
+	<cstring>
+	<cstdarg>
 	<vector>
 	<string>
 	<iostream>

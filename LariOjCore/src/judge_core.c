@@ -122,13 +122,17 @@ void inline judge_env_shell_creat(const char *workspace){
     vsystem("ln -s /bin/busybox ./bin/sh"); //sh
     vsystem("cp /bin/bash ./bin/bash");
 
-    vsystem("cp -f /lib/* ./lib/ >/dev/null 2>&1 &");
-    vsystem("cp -f /lib32/* ./lib32/ >/dev/null 2>&1 & ");
-    vsystem("cp -f /lib64/* ./lib64/ >/dev/null 2>&1 &");
-    vsystem("cp -a /lib/*-linux-gnu ./lib/ > /dev/null 2>&1 &");
+    vsystem("cp -f /lib/* ./lib/ >/dev/null 2>&1 ");
+    vsystem("cp -f /lib32/* ./lib32/ >/dev/null 2>&1  ");
+    vsystem("cp -f /lib64/* ./lib64/ >/dev/null 2>&1 ");
+    vsystem("cp -a /lib/*-linux-gnu ./lib/ > /dev/null 2>&1 ");
 
     //cp some functions
     //vsystem("ln -s /bin/busybox ./bin/traceroute");
+
+    #ifdef DEBUG
+    zDebug("sandbox is ok .\n");
+    #endif // DEBUG
 
 }
 
@@ -143,6 +147,7 @@ void judge_accept(struct solution *__strict_soil, struct problem *__strict_prob)
     char __c__answer   = 0;
     char __c__solution = 0;
     int  __if__accept  = 0;//PRESENTATION_ERROR?;
+
 
     sprintf(__str_answer  ,"%s%s/%d/data.out",USER_HOME_DIR,DATA_DIR ,__strict_prob->problem_id);
     sprintf(__str_solution,"%s%s/%d/user.out",USER_HOME_DIR,JUDGE_DIR,__strict_soil->id);
@@ -161,8 +166,13 @@ void judge_accept(struct solution *__strict_soil, struct problem *__strict_prob)
     if(__fh_answer == NULL || __fh_solution == NULL){
         zCritical("Can not judge this solution %d,problem %d __fh_answer or __fh_solution\n",__strict_soil->id,__strict_prob->problem_id);
         __strict_soil->status = SYSTEM_ERROR;
+        lari_hook != NULL ?  lari_hook(__strict_soil,__strict_prob) : NULL;
         return ;
     }//if
+
+    __strict_soil->status = JUDGING;
+    lari_hook != NULL ?  lari_hook(__strict_soil,__strict_prob) : NULL;
+
     __c__answer   = fgetc(__fh_answer  );
     __c__solution = fgetc(__fh_solution);
     for(;;__c__answer = fgetc(__fh_answer),__c__solution = fgetc(__fh_solution)){//check . one by one
@@ -250,9 +260,9 @@ void inline judge_env_creat(int solution_id,char *work_space,struct solution *so
 void inline judge_env_destruct(char *workspace){
 
     #ifdef DEBUG
-    zDebug("cleaning workspace..\n");
+    zDebug("cleaning workspace %s ..\n",workspace);
     #endif // DEBUG
-    vsystem("rm -rf %s",workspace);
+    vsystem("rm -Rf %s",workspace);
 
 }
 
@@ -361,14 +371,15 @@ void judge_run(struct solution *soil,struct problem *prob,const char *workspace)
         exit(64);
     }
 
-    soil->status = RUNNING;
+    ///soil->status = RUNNING;
+    ///hook
 
     //vsystem("traceroute 23.88.238.66") ;
 
 
     ///redirect std streams
     #ifdef CRITICAL
-     zCritical(" redirecting std streams \n","s");
+     zDebug("redirecting std streams \n","s");
     #endif // CRITICAL
 
     freopen("read.in", "r+", stdin);
@@ -400,7 +411,7 @@ void judge_run(struct solution *soil,struct problem *prob,const char *workspace)
 
 
     LIM.rlim_cur = prob->output_limit * STD_KB;
-    LIM.rlim_max = LIM.rlim_max + STD_MB;
+    LIM.rlim_max = LIM.rlim_cur + STD_MB;
 
     setrlimit(RLIMIT_FSIZE,&LIM);//if output limit exceeded , it will raise a SIGXFSZ
 
@@ -476,7 +487,7 @@ void judge_watchdog(pid_t cpid,struct solution *soil,struct problem *prob){
             ptrace(PTRACE_KILL,cpid,NULL,NULL);
             soil->status = MEMORY_LIMIT_EXCEEDED;
             strcpy(soil->errmsg,"Out of Memory.");
-            lari_hook != NULL ?  lari_hook(soil,prob) : NULL;
+            //lari_hook != NULL ?  lari_hook(soil,prob) : NULL;
             break;
        }
 
@@ -633,7 +644,9 @@ void judge_watchdog(pid_t cpid,struct solution *soil,struct problem *prob){
     zDebug("running process %d OK , time (%d) , mem (%d)\n",cpid,soil->used_time,soil->used_mem);
     #endif // DEBUG
     ///hook
-    lari_hook != NULL ?  lari_hook(soil,prob) : NULL;
+    if(soil->status != RUNNING){
+         lari_hook != NULL ?  lari_hook(soil,prob) : NULL;
+    }
 }
 
 void judge_deploy(struct solution *soil,struct problem *prob){
@@ -651,13 +664,12 @@ void judge_deploy(struct solution *soil,struct problem *prob){
 
     judge_env_creat(soil->id,work_space,soil);  ///create environment for judger
 
-    judge_prepare_env(prob,work_space);
+    if(soil->status != SYSTEM_ERROR){
+        judge_prepare_env(prob,work_space);
+    }
 
 
     //printf("%d",soil->status);
-
-
-
 
 
     if(soil->status < COMPILING)
@@ -691,7 +703,7 @@ void judge_deploy(struct solution *soil,struct problem *prob){
         }else{
             judge_watchdog(cpid,soil,prob);
             //copy the results & errors
-            file_get_contents(soil->stdout,STD_KB*4,"user.out");
+            file_get_contents(soil->stdout,SO_STDOUT_L,"user.out");
             if(prob->problem_id != 0 && soil->status == RUNNING){
             // TODO (hafrans#1#): check the program's answer.
               //zDebug("problem %d is Accepted.\n",prob->problem_id);
@@ -705,6 +717,9 @@ void judge_deploy(struct solution *soil,struct problem *prob){
                   zDebug("solution %d is Accepted.\n",prob->problem_id);
               }
               #endif // DEBUG
+            }else{
+                soil->status = USER_SUBMIT;
+                lari_hook != NULL ?  lari_hook(soil,prob) : NULL;
             }
         }
     }

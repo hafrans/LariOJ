@@ -38,7 +38,10 @@
 #define DEBUG_MAIN
 
 
+
 //extern int __fi_lock = 0;
+
+static DbHelper *__data;
 
 
 /**
@@ -71,8 +74,9 @@ void* functt(struct solution *soil,struct problem *prob){
 
     if(soil != NULL){
 
-        //puts("WE GET A CALL");
-        printf("%d\n",soil->status);
+       char buf[BUFF_SIZE];
+       sprintf(buf,"update `solution` set status = %d where id = %d",soil->status,soil->id);
+       __data != NULL && __data->exec(buf);
 
     }
     return NULL;
@@ -89,7 +93,14 @@ int main(int argc,char *args[]){
     char mysql_port  [BUFF_SIZE] = {0};
     char solution_id [BUFF_SIZE] = {0};
 
-   // judge_set_hook(functt);
+    struct solution soil;
+    struct problem  prob;
+
+
+
+
+
+
 
 #ifndef DEBUG_MAIN
 
@@ -109,23 +120,50 @@ int main(int argc,char *args[]){
     for(int offset = 1;offset < argc;++offset){
 
         if(!strcmp("--d-h",args[offset])){
-             strcpy(mysql_host,args[offset++]);
+
+             if(offset < argc - 1)
+             strcpy(mysql_host,args[++offset]);
+
         }else if(!strcmp("--d-p",args[offset])){
-            strcpy(mysql_port,args[offset++]);
+
+            if(offset < argc - 1)
+            strcpy(mysql_port,args[offset]);
+
         }else if(!strcmp("-p",args[offset])){
-            strcpy(solution_id,args[offset++]);
+
+            if(offset < argc - 1)
+            strcpy(solution_id,args[++offset]);
+
         }else if(!strcmp("--d-u",args[offset])){
-            strcpy(mysql_user,args[offset++]);
+
+            if(offset < argc - 1)
+            strcpy(mysql_user,args[++offset]);
+
         }else if(!strcmp("--d-pwd",args[offset])){
-            strcpy(mysql_pwd,args[offset++]);
+
+            if(offset < argc - 1)
+            strcpy(mysql_pwd,args[++offset]);
+
         }else if(!strcmp("--d-dbn",args[offset])){
-            strcpy(mysql_dbname,args[offset++]);
+
+            if(offset < argc - 1)
+            strcpy(mysql_dbname,args[++offset]);
+
         }else if(!strcmp("-d",args[offset])){
-            strcpy(mysql_host,args[offset++]);
-            strcpy(mysql_port,args[offset++]);
-            strcpy(mysql_dbname,args[offset++]);
-            strcpy(mysql_user,args[offset++]);
-            strcpy(mysql_pwd,args[offset++]);
+
+            if(offset < argc - 1)
+            strcpy(mysql_host,args[++offset]);
+            if(offset < argc - 1)
+            strcpy(mysql_port,args[++offset]);
+            if(offset < argc - 1)
+            strcpy(mysql_dbname,args[++offset]);
+            if(offset < argc - 1)
+            strcpy(mysql_user,args[++offset]);
+            if(offset < argc - 1)
+            strcpy(mysql_pwd,args[++offset]);
+            else
+            printf("\nmiss variable\n\n");
+
         }else if(!strcmp("--help",args[offset]) || !strcmp("--h",args[offset])){
             printf("Usage: %s [options] command\n\n",args[0]);
             puts("Arguments:\n");
@@ -137,10 +175,14 @@ int main(int argc,char *args[]){
             puts("          -d [h] [p] [dbn] [u] [pwd]     config");
             puts("          -p                             solution id in database");
             puts("");
+            return 0;
         }else{
              printf("\nUnknown option: %s\n\n",args[offset]);
              return 0;
         }
+
+
+    }
 
         ////////////////////////////////////////////////////////////////////////////////////
         //check variables;
@@ -151,7 +193,7 @@ int main(int argc,char *args[]){
         if(!strcmp("",mysql_pwd))exitf(120,"mysql pwd is not specified\n");
         if(!strcmp("",solution_id))exitf(120,"solution is not specified.\n");
 
-    }
+
 
 #else
 
@@ -160,6 +202,7 @@ int main(int argc,char *args[]){
     strcpy(mysql_user,"root") ;
     strcpy(mysql_pwd,"root");
     strcpy(mysql_dbname,"test") ;
+    strcpy(solution_id,"1") ;
 
 #endif //DEBUG_MAIN
 
@@ -167,29 +210,64 @@ int main(int argc,char *args[]){
 
           DbHelper data(mysql_host,atoi(mysql_port),mysql_user,mysql_pwd,mysql_dbname);
 
+
           try{
             data.connect();
-            vector<std::string> vec = data.queryOneRow("select * from h_article");
-             printf("%s ",vec[3].c_str());
-//            vector<vector<std::string> > vec = data.query("select * from h_article");
-//
-//            for(vector<vector<std::string> >::iterator it = vec.begin();it != vec.end();++it){
-//                for(vector<std::string>::iterator _it = it->begin(); _it != it->end();++_it){
-//                    printf("%s ",_it->c_str());
-//                }
-//                printf("\n");
-//            }
+            __data = &data;
+            char buf[BUFF_SIZE];
+            sprintf(buf,"select * from solution where id = %s",solution_id);
+            vector<std::string> vec = data.queryOneRow(buf);
+
+            soil.id         =  atoi(vec[0].c_str());
+            soil.problem_id =  atoi(vec[1].c_str()) ;
+            strcpy(soil.code,vec[8].c_str());
+            soil.lang       =  static_cast<language>(atoi(vec[7].c_str()));
+            soil.code_length=  strlen(soil.code);
+
+            sprintf(buf,"select * from problem where id = %d",soil.problem_id);
+            vector<std::string> vec2 = data.queryOneRow(buf);
+
+            prob.problem_id   = soil.problem_id;
+            prob.lang_limit   = atoi(vec2[11].c_str());
+            prob.mem_limit    = atoi(vec2[9].c_str());
+            prob.time_limit   = atoi(vec2[8].c_str());
+            prob.output_limit = atoi(vec2[10].c_str());
+            prob.is_special   = atoi(vec2[4].c_str());
+
+            judge_set_hook(functt);
+            judge_deploy(&soil,&prob);
+
+            char          code[SO_CODE_L];
+            char          errmsg[SO_STDERR_L];
+            char          stdout[SO_STDOUT_L];
+
+            data.escape(code,soil.code);
+            data.escape(errmsg,soil.errmsg);
+            data.escape(stdout,soil.stdout);
+
+            sprintf(buf,"update solution set status = %d , used_time = %d , used_mem = %d , \
+err_msg = '%s' ,stdout = '%s' , code_length = %d where id = %d ",soil.status,soil.used_time,soil.used_mem,errmsg,stdout,soil.code_length,soil.id);
+
+            data.exec(buf);
+
+            sprintf(buf,"update problem set submit = `submit` +1 where id = %d ",soil.problem_id);
+
+            data.exec(buf);
+
+            if(soil.status == ACCEPTED){
+
+                sprintf(buf,"update problem set accepted = `accepted` +1 where id = %d",soil.problem_id);
+
+                data.exec(buf);
+
+            }
+            //puts(buf);
+
           }catch(const char *errmsg){
             puts(errmsg);
           }
 
 
-
-//        MYSQL *handle = mysql_init(NULL);
-//
-//        mysql_real_connect(handle,"127.0.0.1","root","","test",0,NULL,0);
-//
-         //puts(data.get_errmsg());
 
         ////////////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////////////

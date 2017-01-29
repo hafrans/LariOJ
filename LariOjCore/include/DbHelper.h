@@ -1,6 +1,7 @@
 #include <mysql/mysql.h>
-#include "stdio.h"
-#include "string.h"
+#include <cstdio>
+#include <cstring>
+#include <cstdarg>
 #include <vector>
 #include <string>
 #include <iostream>
@@ -54,6 +55,7 @@ class DbHelper
         virtual unsigned int exec(const char *__cmd_query) throw(const char *);
         virtual vector< vector<std::string> > query(const char *__cmd_query) throw (const char *);
         virtual vector<std :: string > queryOneRow(const char *__cmd_query) throw (const char *);
+        virtual unsigned long escape(char *__str__dest,const char *__str_src) noexcept;
         explicit DbHelper();
         DbHelper(char *__db__host_,
                unsigned int  __db__port_,

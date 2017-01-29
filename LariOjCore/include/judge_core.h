@@ -112,6 +112,12 @@
 #define JUDGE_DIR "judge"
 #define DATA_DIR  "data"
 #define LARI_USER_UID 811
+
+
+#define SO_CODE_L   STD_KB*64
+#define SO_STDERR_L STD_KB*4
+#define SO_STDOUT_L STD_KB*16
+
 #endif // USER_HOME
 
 
@@ -154,20 +160,23 @@
      #endif // __cplusplus
 
      enum judge_status{
-            QUEUING,
-            COMPILING,
-            COMPILE_ERROR,
-            RUNNING,
-            WRONG_ANSWER,
-            ACCEPTED,
-            RUNTIME_ERROR,
-            SYSTEM_ERROR,
-            PRESENTATION_ERROR,
-            TIME_LIMIT_EXCEEDED,
-            MEMORY_LIMIT_EXCEEDED,
-            OUTPUT_LIMIT_EXCEEDED,
-            SECURITY_ERROR,
-            UNKNOWN_ERROR
+            ONHOLD ,                 //0
+            QUEUING,                 //1
+            COMPILING,               //2
+            COMPILE_ERROR,           //3
+            RUNNING,                 //4
+            JUDGING,                 //5
+            ACCEPTED,                //6
+            RUNTIME_ERROR,           //7
+            SYSTEM_ERROR,            //8
+            PRESENTATION_ERROR,      //9
+            TIME_LIMIT_EXCEEDED,     //10
+            MEMORY_LIMIT_EXCEEDED,   //11
+            OUTPUT_LIMIT_EXCEEDED,   //12
+            SECURITY_ERROR,          //13
+            UNKNOWN_ERROR,           //14
+            USER_SUBMIT,             //15
+            WRONG_ANSWER             //16
      };
 
      enum language {
@@ -179,23 +188,25 @@
 
      struct solution{
             int           id;
-            int           problem;
+            int           problem_id;
             int           used_time; //ms
             int           used_mem;  //b
-            char          code[STD_KB*64];
-            char          errmsg[STD_KB*4];
-            char          stdout[STD_KB*4];
+            char          code[SO_CODE_L];
+            char          errmsg[SO_STDERR_L];
+            char          stdout[SO_STDOUT_L];
             enum          judge_status status;
             enum          language     lang;
+            int           code_length;
      };
 
 
      struct problem{
             int          problem_id;
-            int          time_limit;
-            int          mem_limit;
-            int          output_limit;
+            int          time_limit;    //second
+            int          mem_limit;     //kb
+            int          output_limit;  //kb
             int          lang_limit;
+            int          is_special;    //0 false else true
     };
 
 
@@ -212,6 +223,8 @@
 
      extern void judge_set_hook(void *(* func)(struct solution *,struct problem *));
 
+     extern void judge_deploy_user_program(const char *program,enum language lang);
+
      extern int  judge_compile(struct solution *soil,struct problem *prob);
 
      extern int  judge_check_mem_peak(pid_t cpid) ;
@@ -223,6 +236,8 @@
      extern void inline judge_prepare_env(struct problem *prob,const char *workspace);
 
      extern void inline judge_env_shell_creat(const char *workspace);
+
+
 
 
 
