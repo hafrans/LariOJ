@@ -1,0 +1,177 @@
+# depslib dependency file v1.0
+1485789443 source:/home/hafrans/Desktop/LariOj/src/DbHelper.cpp
+	"DbHelper.h"
+
+1485789317 /home/hafrans/Desktop/LariOj/include/DbHelper.h
+	<mysql.h>
+	<cstdio>
+	<cstring>
+	<cstdarg>
+	<vector>
+	<string>
+	<iostream>
+
+1485183522 source:/home/hafrans/Desktop/LariOj/src/debug.c
+	"debug.h"
+	<string.h>
+
+1485873174 /home/hafrans/Desktop/LariOj/include/debug.h
+	"assert.h"
+	"stdarg.h"
+	"stdio.h"
+
+1485765319 source:/home/hafrans/Desktop/LariOj/src/judge_core.c
+	"judge_core.h"
+	"syscall_filiter.h"
+	"debug.h"
+
+1485764994 /home/hafrans/Desktop/LariOj/include/judge_core.h
+	<stdio.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<dirent.h>
+	<unistd.h>
+	<time.h>
+	<stdarg.h>
+	<ctype.h>
+	<sys/wait.h>
+	<sys/ptrace.h>
+	<sys/types.h>
+	<sys/user.h>
+	<sys/syscall.h>
+	<sys/time.h>
+	<sys/resource.h>
+	<sys/signal.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<unistd.h>
+	<asm/unistd.h>
+	<sys/user.h>
+	<sys/reg.h>
+	"utility.h"
+
+1485851846 /home/hafrans/Desktop/LariOj/include/utility.h
+	<stdio.h>
+	<stdarg.h>
+	<stdlib.h>
+	<string.h>
+	<unistd.h>
+	<math.h>
+	<sys/stat.h>
+	<sys/fcntl.h>
+
+1485183529 /home/hafrans/Desktop/LariOj/include/syscall_filiter.h
+
+1484910884 source:/home/hafrans/Desktop/LariOj/src/LariCore.cpp
+	"LariCore.h"
+
+1484985422 /home/hafrans/Desktop/LariOj/include/LariCore.h
+
+1485785860 source:/home/hafrans/Desktop/LariOj/src/main2.cc
+	<cstdio>
+	<cstdlib>
+	<cstring>
+	"lari.h"
+	"unistd.h"
+	"sys/wait.h"
+	"sys/types.h"
+	"network.h"
+	"DbHelper.h"
+	"utility.h"
+
+1485790687 /home/hafrans/Desktop/LariOj/include/lari.h
+
+1485786746 /home/hafrans/Desktop/LariOj/include/network.h
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	<unistd.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<sys/un.h>
+	<netinet/in.h>
+	<netinet/tcp.h>
+	<arpa/inet.h>
+
+1485855083 source:/home/hafrans/Desktop/LariOj/src/network.c
+	<network.h>
+
+1485855090 source:/home/hafrans/Desktop/LariOj/src/utility.c
+	"utility.h"
+
+1485873194 source:/home/hafrans/Desktop/LariOj/src/deploy.c
+	"deploy.h"
+
+1485873187 /home/hafrans/Desktop/LariOj/include/deploy.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<ctype.h>
+	<unistd.h>
+	<sys/types.h>
+	<sys/resource.h>
+	<sys/wait.h>
+	"lari.h"
+	"debug.h"
+	"utility.h"
+
+1485872761 source:/home/hafrans/Desktop/LariOj/src/judged.cc
+	<cstdio>
+	<cstdlib>
+	<cstring>
+	<vector>
+	"lari.h"
+	"unistd.h"
+	"sys/wait.h"
+	"sys/types.h"
+	"network.h"
+	"DbHelper.h"
+	"utility.h"
+	"deploy.h"
+
+1480339972 /usr/include/mysql/mysql.h
+	<sys/types.h>
+	<windows.h>
+	<winsock2.h>
+	"mysql_version.h"
+	"mysql_com.h"
+	"mysql_time.h"
+	"my_list.h"
+	"mysql/client_plugin.h"
+	"typelib.h"
+	"my_alloc.h"
+
+1484774636 /usr/include/mysql/mysql_version.h
+
+1480339972 /usr/include/mysql/mysql_com.h
+	"binary_log_types.h"
+	"my_command.h"
+
+1480339972 /usr/include/mysql/binary_log_types.h
+
+1480339972 /usr/include/mysql/my_command.h
+
+1480339972 /usr/include/mysql/mysql_time.h
+
+1480339972 /usr/include/mysql/my_list.h
+
+1480339972 /usr/include/mysql/mysql/client_plugin.h
+	<stdarg.h>
+	<stdlib.h>
+	"plugin_auth_common.h"
+
+1480339972 /usr/include/mysql/mysql/plugin_auth_common.h
+	<windows.h>
+
+1480339972 /usr/include/mysql/typelib.h
+	"my_alloc.h"
+
+1480339972 /usr/include/mysql/my_alloc.h
+	"mysql/psi/psi_memory.h"
+
+1480339972 /usr/include/mysql/mysql/psi/psi_memory.h
+	"psi_base.h"
+
+1480339972 /usr/include/mysql/mysql/psi/psi_base.h
+

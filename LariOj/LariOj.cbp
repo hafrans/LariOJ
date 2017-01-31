@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="OJ" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/judger" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-DDEBUG_MAIN" />
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/LariOj" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-fexpensive-optimizations" />
+					<Add option="-O3" />
+				</Compiler>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-std=c++11" />
+			<Add option="-m64" />
+			<Add option="`mysql_config --cxxflags`" />
+			<Add directory="include" />
+		</Compiler>
+		<Linker>
+			<Add option="-m64" />
+			<Add option="`mysql_config --libs`" />
+		</Linker>
+		<Unit filename="include/DbHelper.h" />
+		<Unit filename="include/debug.h" />
+		<Unit filename="include/judge_core.h" />
+		<Unit filename="include/lari.h" />
+		<Unit filename="include/network.h" />
+		<Unit filename="include/syscall_filiter.h" />
+		<Unit filename="include/utility.h" />
+		<Unit filename="src/DbHelper.cpp" />
+		<Unit filename="src/debug.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/judge_core.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/judger.cc" />
+		<Unit filename="src/network.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/utility.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<envvars />
+			<code_completion />
+			<lib_finder disable_auto="1" />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
