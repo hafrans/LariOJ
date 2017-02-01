@@ -72,15 +72,15 @@ int deploy_local(const char* solution_id,char* _local[]){
             ///////////////////////////////////////////////
 
             char *args[] = {
-            DFL_JUDGER_PATH,"-d",_local[0],_local[1],_local[2],_local[3],_local[4],"-p",(char *)solution_id,(char *)0
+            _local[5],"-d",_local[0],_local[1],_local[2],_local[3],_local[4],"-p",(char *)solution_id,(char *)0
             };
 
 
-            if(!file_exists(DFL_JUDGER_PATH)){
+            if(!file_exists(_local[5])){
                 exit(250);
             }
 
-            execv(DFL_JUDGER_PATH,args);
+            execv(_local[5],args);
 
                 exit(251);
 
@@ -132,6 +132,7 @@ void deploy_delicated(const char *solution_id,char **_local){
                 break;
         }
 
+        exit(0);
 
      }
 }

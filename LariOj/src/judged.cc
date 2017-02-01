@@ -65,6 +65,7 @@ int main(int argc,char *argv[])
     char mysql_dbname[BUFF_SIZE] = {0};
     char mysql_port  [BUFF_SIZE] = {0};
     char server_type [BUFF_SIZE] = {0};
+    char judger_path [BUFF_SIZE] = {0};
     char buf         [BUFF_SIZE] = {0};
 //    int  server_type = 0;
 
@@ -77,11 +78,13 @@ int main(int argc,char *argv[])
     read_conf(ct,"server_user",mysql_user);
     read_conf(ct,"server_pwd" ,mysql_pwd);
     read_conf(ct,"server_dbn" ,mysql_dbname);
+    read_conf(ct,"server_dbn" ,mysql_dbname);
     read_conf(ct,   "type"    ,server_type);
+    read_conf(ct,"judger_path",judger_path);
 
 
     char *local_args[] = {
-    mysql_host,mysql_port,mysql_dbname,mysql_user,mysql_pwd
+    mysql_host,mysql_port,mysql_dbname,mysql_user,mysql_pwd,judger_path
     }  ;
 
 
@@ -125,7 +128,7 @@ int main(int argc,char *argv[])
                 for(vector<std::string> :: const_iterator it = mVector.cbegin(); it != mVector.cend();++it){
 
                     zDebug("Get Solution id : %s from DataBase.\n",it->c_str());
-                    sprintf(buf,"update `solution` set `status` = 1 where id %s",it->c_str());
+                    sprintf(buf,"update `solution` set `status` = 1 where id =  %s",it->c_str());
                     data.exec(buf);
 
                     //deploy
@@ -134,7 +137,7 @@ int main(int argc,char *argv[])
 
 
                     zDebug("Solution id : %s deployed +--> LocalHost.\n",it->c_str());
-                    sleep(1);
+                    sleep(2);
 
                 }
 
@@ -172,7 +175,7 @@ int main(int argc,char *argv[])
 
 
 
-
+    close_conf_file(ct);
     return 0;
 
 }

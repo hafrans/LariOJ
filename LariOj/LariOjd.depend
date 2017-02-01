@@ -100,7 +100,7 @@
 1485855090 source:/home/hafrans/Desktop/LariOj/src/utility.c
 	"utility.h"
 
-1485873194 source:/home/hafrans/Desktop/LariOj/src/deploy.c
+1485918390 source:/home/hafrans/Desktop/LariOj/src/deploy.c
 	"deploy.h"
 
 1485873187 /home/hafrans/Desktop/LariOj/include/deploy.h
@@ -116,7 +116,7 @@
 	"debug.h"
 	"utility.h"
 
-1485872761 source:/home/hafrans/Desktop/LariOj/src/judged.cc
+1485918231 source:/home/hafrans/Desktop/LariOj/src/judged.cc
 	<cstdio>
 	<cstdlib>
 	<cstring>
